@@ -1,0 +1,19 @@
+SELECT
+    COUNT(*) AS FISH_COUNT, 
+    MAX(LENGTH_NEW) AS MAX_LENGTH, 
+    FISH_TYPE
+FROM (
+    SELECT 
+        ID, 
+        FISH_TYPE, 
+        CASE 
+            -- WHEN LENGTH IS NULL THEN LENGTH = 10 -- 🚫
+            WHEN LENGTH IS NULL THEN 10 -- ✅
+            ELSE LENGTH 
+        END AS LENGTH_NEW
+    FROM FISH_INFO 
+) sub
+-- WHERE AVG(LENGTH_NEW) >= 33 -- 🚫 WHERE에 집계함수로 조건 못 씀
+GROUP BY FISH_TYPE 
+HAVING AVG(LENGTH_NEW) >= 33  -- ✅ 집계함수로 조건 쓰려면 HAVING
+ORDER BY FISH_TYPE ASC
